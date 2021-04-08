@@ -15,7 +15,6 @@ function Send()
   var sendUrl_ThingSpeak = "https://api.thingspeak.com/update?";
   sendUrl_ThingSpeak = sendUrl_ThingSpeak + "key=" + api_key;
   sendUrl_ThingSpeak = sendUrl_ThingSpeak + text;
-  alert(sendUrl_ThingSpeak);
   document.getElementById("thingspeak").action = sendUrl_ThingSpeak;
   document.getElementById("thingspeak").submit();
 }
