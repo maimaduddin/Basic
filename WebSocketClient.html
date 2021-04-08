@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+	<head>
+		<script type="text/javascript" src="./Includes/paho-mqtt.js"></script>
+		<script type="text/javascript" src="./Includes/paho-mqtt-min.js"></script>
+		
+		<script languange="javascript">
+
+        var client = "";
+        
+		function ClientConnect() {
+			if(document.getElementById("host").value == "")
+			{
+				document.getElementById("host").value = "broker.mqttdashboard.com";
+			};
+		    
+		    if(document.getElementById("port").value == "")
+			{
+				document.getElementById("port").value = "8000";
+			};
+			
+			if(document.getElementById("clientid").value == "")
+			{
+				document.getElementById("clientid").value = "myclientid_" + parseInt(Math.random() * 100, 10);
+			};
+			
+			var c_hostname = document.getElementById("host").value;
+			var c_port = parseInt(document.getElementById("port").value);
+			var c_clientId = document.getElementById("clientid").value;
+			//var c_username = "pi";
+			//var c_password = "raspberry";
+		
+			//Using the HiveMQ public Broker, with a random client Id 
+			client = new Paho.MQTT.Client(c_hostname, c_port, c_clientId);
+			client.onConnectionLost = onConnectionLost;
+			client.onMessageArrived = onMessageArrived;
+			client.connect(options);
+		};
+		
+		function ClientDisconnect() {
+			client.disconnect();
+			console.log("Disconnected");	
+			alert("Disconnected");
+		};
+		
+		function ClientPublish() {
+			var p_topic = document.getElementById("p_topic").value;
+			var p_payload = document.getElementById("p_payload").value;
+			var p_qos = parseInt( document.getElementById("cbop_qos").value);
+			//var p_retained = false;
+			
+			publish(p_payload,p_topic,p_qos);
+		};
+		
+		function ClientSubscribe() {
+			var s_topic = document.getElementById("s_topic").value;
+			var s_qos = parseInt( document.getElementById("cbos_qos").value);
+			client.subscribe(s_topic,s_qos); 
+			alert('Subscribed');
+		};
+			
+		//Connect Options
+		var options = {
+			timeout: 3,
+			//Gets Called if the connection has sucessfully been established
+			onSuccess: function () {
+				console.log("Connected");	
+				alert("Connected");
+			},
+			//Gets Called if the connection could not be established
+			onFailure: function (message) {
+				console.log("Connection failed: " + message.errorMessage);
+				alert("Connection failed: " + message.errorMessage);
+			}
+		};
+ 
+		function onConnectionLost(responseObject) {
+			//Depending on your scenario you could implement a reconnect logic here
+			if (responseObject.errorCode !== 0)
+			console.log("onConnectionLost:" + responseObject.errorMessage);
+			//alert("connection lost: " + responseObject.errorMessage);
+		};
+		
+		function onMessageArrived(message) {
+			//Do something with the push message you received
+			document.getElementById('messages').append('Topic: ' + message.destinationName + '  | ' + message.payloadString + '\r\n');
+			//console.log("onMessageArrived:" + message.payloadString);
+			//alert("onMessageArrived:" + message.payloadString);
+		};
+		
+		 //Creates a new Messaging.Message Object and sends it to the HiveMQ MQTT Broker
+		function publish (payload, topic, qos) {
+			 //Send your message (also possible to serialize it as JSON or protobuf or just use a string, no limitations)
+			 var message = new Paho.MQTT.Message(payload);
+			 message.destinationName = topic;
+			 message.qos = qos;
+			 client.send(message);
+		}
+
+		</script>
+		<meta charset="utf-8">
+		<title>WebSocket-Client</title>
+		<style type="text/css">
+			body		{font-family: sans-serif;}
+			table		{empty-cells: show;}
+			.on			{background-color: 	#00FF00;}
+			.off		{background-color: 	#FF0000;}
+			.set_on		{background-color: 	#CCFFCC;}
+			.set_off	{background-color: 	#FFCCCC;}
+			.unknown	{background-color: 	#DDDDDD;}
+			.on:before, .set_on:before		{content: "ON";}
+			.off:before, .set_off:before	{content: "OFF";}
+			.unknown:before					{content: "?";}
+			#output0,#output1{
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>WebSocket-Client</h1>  
+		
+		<table>
+			<tr>
+				<td>
+					<h2>Connection</h2>
+				</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td>Host : </td>
+				<td><input type="visible" id ="host" name="host" value="" size="15" style="font-weight: 700; font-family: 'Times New Roman'; font-size: 10.0pt; text-align: center; vertical-align: middle">
+				</td>
+				<td>Port : </td>
+				<td><input type="visible" id ="port" name="port" value="" size="5" style="font-weight: 700; font-family: 'Times New Roman'; font-size: 10.0pt; text-align: center; vertical-align: middle">
+				</td>
+				<td>ClientID : </td>
+				<td><input type="visible" id ="clientid" name="clientid" value="" size="15" style="font-weight: 700; font-family: 'Times New Roman'; font-size: 10.0pt; text-align: center; vertical-align: middle">
+				</td>
+				<td><button onclick="ClientConnect();">1. Connect</button></td>
+				<td><button onclick="ClientDisconnect();">(4. Disconnect)</button></td>
+			</tr>
+		</table>
+		
+		<table>
+			<tr>
+				<td>
+					<h2>Publish</h2>
+				</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td>Topic : </td>
+				<td><input type="visible" id ="p_topic" name="p_topic" value="" size="15" style="font-weight: 700; font-family: 'Times New Roman'; font-size: 10.0pt; text-align: center; vertical-align: middle">
+				</td>
+				<td>QoS : </td>
+				<td>
+				<select size="1" id="cbop_qos" name="cbop_qos" style="font-weight: 700">
+  			 		<option value="0" selected>0</option>
+  			  		<option value="1">1</option>
+  			  		<option value="2">2</option>
+ 			  	</select> 
+				</td>
+				<td><button onclick="ClientPublish();">2. Publish</button></td>
+			</tr>
+			<tr>
+				<td>Message : </td>
+				<td><input type="visible" id ="p_payload" name="p_payload" value="" size="15" style="font-weight: 700; font-family: 'Times New Roman'; font-size: 10.0pt; text-align: center; vertical-align: middle">
+				</td>	
+			</tr>
+		</table>
+		
+		<table>
+			<tr>
+				<td>
+					<h2>Subscribe</h2>
+				</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td>Topic : </td>
+				<td><input type="visible" id ="s_topic" name="s_topic" value="" size="15" style="font-weight: 700; font-family: 'Times New Roman'; font-size: 10.0pt; text-align: center; vertical-align: middle">
+				</td>
+				<td>QoS : </td>
+				<td>
+				<select size="1" id="cbos_qos" name="cbos_qos" style="font-weight: 700">
+  			 		<option value="0" selected>0</option>
+  			  		<option value="1">1</option>
+  			  		<option value="2">2</option>
+ 			  	</select>
+ 			  	</td>
+				<td><button onclick="ClientSubscribe();">3. Subscribe</button></td>
+			</tr>
+		</table>
+		<div id="messages"></div>
+		
+	</body>
+</html>
