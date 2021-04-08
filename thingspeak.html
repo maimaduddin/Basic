@@ -5,19 +5,17 @@
 function Send()
 { 
   var api_key = document.getElementById("api_key").value;
-  var field1 = document.getElementById("field1").value;
-  var field2 = document.getElementById("field2").value;
-  var field3 = document.getElementById("field3").value;
-  var field4 = document.getElementById("field4").value;
-  var field5 = document.getElementById("field5").value;
-  var field6 = document.getElementById("field6").value;
-  var field7 = document.getElementById("field7").value;
-  var field8 = document.getElementById("field8").value;
-  
+  var text = "";
+  for (var i=1;i<9;i++)
+  {
+	if (document.getElementById("field" + i).value != ""){
+		text = text + "&" + "field" + i + "=" + document.getElementById("field" + i).value;
+	}
+  }
   var sendUrl_ThingSpeak = "https://api.thingspeak.com/update?";
   sendUrl_ThingSpeak = sendUrl_ThingSpeak + "key=" + api_key;
-  sendUrl_ThingSpeak = sendUrl_ThingSpeak + "&text=" + text;
-  
+  sendUrl_ThingSpeak = sendUrl_ThingSpeak + text;
+  alert(sendUrl_ThingSpeak);
   document.getElementById("thingspeak").action = sendUrl_ThingSpeak;
   document.getElementById("thingspeak").submit();
 }
@@ -54,7 +52,7 @@ function Send()
 	<table>	
 	<tr>
 		<td>Api Key : </td>
-  	<td><input type="visible" id="api_key" name="api_key" value=""></td>
+  		<td><input type="visible" id="api_key" name="api_key" value=""></td>
 	</tr>
 	<tr>
 		<td>Field 1 : </td>        
