@@ -1,0 +1,88 @@
+<html>
+<head><title>XMLHttpRequest</title></head>
+<body>
+<script type="text/javascript"> 
+function GetData() {
+  const url = document.getElementById('api_url').value;
+  getapi(url);
+}
+
+function getapi(url) {
+  const xhttp = new XMLHttpRequest();
+
+  //xhttp.onload = function() {
+  //  document.getElementById("demo").innerHTML =
+  //  this.getAllResponseHeaders();
+  //}
+
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML =
+      this.responseText;
+    }
+  };
+
+  xhttp.open("GET", url, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+}
+
+</script>   
+    <form method="POST" action="" id="XMLHttpRequestApi" name="XMLHttpRequestApi">
+	 <table border="0" cellpadding="0" width="100%" height="1">
+	  <tr>
+	    <td>
+	      <div align="right">
+		<table border="0" cellpadding="0" width="100%" height="21">
+		  <tr>
+		    <td align="left" class="style1">
+			<font color="#668E39">XMLHttpRequest</font></td>
+		  </tr>
+		</table>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td width="100%" height="1">
+	      <hr color="#668E39" size="1">
+	    </td>
+	  </tr>
+	</table>
+	<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%">
+	  <tr>
+	    <td width="25%"><font face="arial" size="1"><b>&nbsp;Welcome, Guest</b></font>
+	    </td>
+	    <td width="25%">&nbsp;</td>
+	    <td width="25%">&nbsp;</td>
+	  </tr>
+	</table>
+	    
+	<table>	
+	<tr>
+		<td>URL : </td>
+  		<td><input type="visible" id="api_url" name="api_url" value=""></td>
+	</tr>
+  	<table>	
+		
+	<input type="button" value="Get Data" id="btnGetData" name="btnGetData" onclick='GetData()'>
+	<div id="demo">
+	</div>	
+	<table border="0" cellpadding="0" width="100%" height="1">
+	  <tr>
+	    <td width="100%" height="1">
+	      <hr color="#668E39" size="1">
+	    </td>
+	  </tr>
+	  <tr>
+	    <td width="100%" height="1" align="center">
+	    <font face="Microsoft Sans Serif" size="1" color="#999999">Developed by <a href="mailto:aimaduddin.myusop@my.panasonic.com?subject=THINGSPEAK" style="color:#668E39;">Mohamad Aimaduddin</a> - Copyright 2021 MI Development</font></td>
+	  </tr>
+	</table>	
+    </form>
+  
+<script type="text/javascript"> 
+const urlParams = new URLSearchParams(window.location.search);
+document.getElementById("api_url").value = urlParams.get("api_url");
+</script>     
+</body>
+</html>
