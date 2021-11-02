@@ -1,0 +1,90 @@
+<html>
+<head><title>Whatsapp</title></head>
+<body>
+<script type="text/javascript"> 
+function Send()
+{ 
+  var apikey = document.getElementById("apikey").value;
+  var phone_no = document.getElementById("phone_no").value;
+  var parse_mode = document.getElementById("parse_mode").value;
+  var text = document.getElementById("text").value;
+  
+  var sendUrl_Whatsapp = "https://api.callmebot.com/whatsapp.php";
+  sendUrl_Whatsapp = sendUrl_Whatsapp + "?phone=" + phone_no;
+  sendUrl_Whatsapp = sendUrl_Whatsapp + "&text=" + text;
+  sendUrl_Whatsapp = sendUrl_Whatsapp + "&apikey=" + apikey;
+   
+  document.getElementById("whatsapp").action = sendUrl_Whatsapp;
+  document.getElementById("whatsapp").submit();
+}
+</script>   
+    <form method="POST" action="" id="whatsapp" name="whatsapp">
+	 <table border="0" cellpadding="0" width="100%" height="1">
+	  <tr>
+	    <td>
+	      <div align="right">
+		<table border="0" cellpadding="0" width="100%" height="21">
+		  <tr>
+		    <td align="left" class="style1">
+			<font color="#668E39">WHATSAPP via CallMeBot</font></td>
+		  </tr>
+		</table>
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td width="100%" height="1">
+	      <hr color="#668E39" size="1">
+	    </td>
+	  </tr>
+	</table>
+	<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%">
+	  <tr>
+	    <td width="25%"><font face="arial" size="1"><b>&nbsp;Welcome, Guest</b></font>
+	    </td>
+	    <td width="25%">&nbsp;</td>
+	    <td width="25%">&nbsp;</td>
+	  </tr>
+	</table>
+	    
+	<table>	
+	<tr>
+		<td>Apikey : </td>
+        	<td><input type="visible" id="apikey" name="apikey" value=""></td>
+	</tr>
+	<tr>
+		<td>Phone No : </td>        
+		<td><input type="visible" id="phone_no" name="phone_no" value=""></td>
+	</tr>
+	<tr>	
+		<td>Parse Mode : </td>            
+		<td><input type="visible" id="parse_mode" name="parse_mode" value=""></td>
+	</tr>
+	<tr>
+		<td>Text : </td>            
+		<td><textarea name="text" id="text"></textarea></td>
+        <tr>
+        <table>	
+        <input type="button" value="Send" id="btnSend" name="btnSend" onclick='Send()'>
+		
+	<table border="0" cellpadding="0" width="100%" height="1">
+	  <tr>
+	    <td width="100%" height="1">
+	      <hr color="#668E39" size="1">
+	    </td>
+	  </tr>
+	  <tr>
+	    <td width="100%" height="1" align="center">
+	    <font face="Microsoft Sans Serif" size="1" color="#999999">Developed by <a href="mailto:aimaduddin.myusop@my.panasonic.com?subject=WHATSAPP" style="color:#668E39;">Mohamad Aimaduddin</a> - Copyright 2021 MI Development</font></td>
+	  </tr>
+	</table>	
+    </form>
+  
+<script type="text/javascript"> 
+const urlParams = new URLSearchParams(window.location.search);
+document.getElementById("apikey").value = urlParams.get("apikey");
+document.getElementById("phone_no").value = urlParams.get("phone_no");
+document.getElementById("parse_mode").value = urlParams.get("parse_mode");
+</script>     
+</body>
+</html>
